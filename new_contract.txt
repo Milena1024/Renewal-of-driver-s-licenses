@@ -1,0 +1,211 @@
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity ^0.6.0;
+contract World {
+    
+    struct ID_card { // Водительское удостоверения +
+        uint number; // Номер
+        address url_card;
+        // Срок действия
+        uint day;
+        uint month;
+        uint year;
+        string category; /* Категория A,B,C*/}
+    
+    struct info_user { // Информация о водителе +
+        // ФИО
+        string last_name;
+        string name;
+        string patronymic;
+        //ID_card[] cards; // Водительское удостоверения
+        string role; // Роль worker ИЛИ client
+        uint expertise; // Стаж: кол-во лет
+        //string login;
+        address addr;
+        string login;}
+    
+    struct transport { // Информация о транспорте +
+        uint index; // Индекс
+        string category; // Категория A,B,C
+        uint price; // Рыночная стоимость
+        address url_transport;
+        uint srok;} // Срок эксплуатации
+    
+    struct message_DPS { // Сообщения ДПС
+        address url_DPS; // Адрес
+        uint index; // Индекс
+        string text; /* Сообщение*/
+        string otvet;}
+    
+    struct message_client { // Сообщения клиента
+        address url_client; // Адрес
+        uint index; // Индекс
+        string text; /* Сообщение*/
+        uint dat;}
+   
+    ID_card[] card; // Водительское удостоверения
+    info_user[] user; // Информация о водителе
+    transport[] transports; // Транспорт
+    message_DPS[] massge; // Сообщения ДПС
+    message_client[] massges;  // Сообщения клиента
+    //---------------------------------------------------
+    //Нахождение длин массивов +
+    
+    function Length_user() public view returns(uint) {return user.length;}
+    
+    function Length_card() public view returns(uint) {return card.length;}
+    
+    function Length_new_transport() public view returns(uint) {return transports.length;}
+    
+    function Length_new_massge_client() public view returns(uint) {return massges.length;}
+    
+    function Length_transport() public view returns(uint) {
+        uint lot = 0;
+        for (uint i = 0; i < transports.length; i++) {
+            if (transports[i].url_transport == msg.sender) {lot++;}}
+        return (lot);}
+        
+    function Length_massge_DPS() public view returns(uint) {return massge.length;}
+    
+    function Length_massge_client() public view returns(uint) {
+        uint lot = 0;
+        for (uint i = 0; i < massges.length; i++) {
+            if (massges[i].url_client == msg.sender) {lot++;}}
+        return (lot);}
+    //---------------------------------------------------
+    //Функции просмотра массивов
+    
+    // Информация о водительском удостоверении +
+     function Info_ID_card(uint click) public view returns( uint, uint, uint, uint, string memory, address) {
+        /*uint click = 0;
+        for (uint i = 0; i < card.length; i++) {
+            if (card[i].url_card == msg.sender) click = i;}*/
+        return(card[click].number, card[click].day, card[click].month, card[click].year, card[click].category, card[click].url_card);}
+    
+    // Информация о пользователе +
+    function Info_users(uint click) public view returns(string memory, string memory, string memory, uint, address, string memory) {
+        /*uint click = 0;
+        for (uint i = 0; i < user.length; i++) {
+            if (user[i].url_user == msg.sender) click = i;}*/
+        return(user[click].last_name, user[click].name, user[click].patronymic, user[click].expertise, user[click].addr, user[click].role);}
+        
+    // Информация о транспорте +
+    function Info_transport(uint i) public view returns(string memory, uint, uint, uint, address) {
+        /*for (uint i = 0; i < transports.length; i++) {
+            if (transports[i].url_transport == msg.sender && transports[i].index == number)*/
+                return(transports[i].category, transports[i].price, transports[i].srok, transports[i].index, transports[i].url_transport);}
+        
+    // Сообщения ДПС +
+    function Info_message_DPS(uint number) public view returns(string memory, uint, uint, uint, uint, string memory, string memory) {
+        number--;
+        uint n=0;
+        for (uint j = 0; j < card.length; j++) {
+            if (massge[number].url_DPS == card[j].url_card)
+            n=j;
+        }
+        return(massge[number].text, card[n].number, card[n].day, card[n].month, card[n].year, card[n].category, massge[number].otvet);}
+           
+    // Сообщения клиент  +    
+    function Info_message_client(uint i) public view returns(string memory, address, uint, uint) {
+        /*for (uint i = 0; i < massges.length; i++) {
+            if (massges[i].url_client == msg.sender && massges[i].index == number)*/
+                return(massges[i].text, massges[i].url_client, massges[i].index, massges[i].dat);}
+    //---------------------------------------------------
+    constructor() public {
+        user.push(info_user("Иванов", "Иван", "Иванович", "worker", 2, 0x828c6FcD4522786dFec9CD6Fc51605448ad6391a, "aaa"));
+        user.push(info_user("Семенов", "Семен", "Семенович", "client", 5, 0x46a0e47061BCbE52480F7462b44f44303a0088fc, "bbb"));
+        user.push(info_user("Петров", "Петр", "Петрович", "client", 10, 0xb3373f2d00F59bB8227d0c469fA7eAB256104286, "ccc"));
+        
+        card.push(ID_card(0, 0x0000000000000000000000000000000000000000, 11, 1, 2021, "A"));
+        card.push(ID_card(111, 0x0000000000000000000000000000000000000000, 12, 5, 2025, "B"));
+        card.push(ID_card(222, 0x0000000000000000000000000000000000000000, 12, 9, 2020, "C"));
+        card.push(ID_card(333, 0x0000000000000000000000000000000000000000, 13, 2, 2027, "A"));
+        card.push(ID_card(444, 0x0000000000000000000000000000000000000000, 11, 12, 2026, "B"));
+        card.push(ID_card(555, 0x0000000000000000000000000000000000000000, 24, 6, 2029, "C"));
+        card.push(ID_card(666, 0x0000000000000000000000000000000000000000, 31, 3, 2030, "A"));
+    }
+    
+     // Активация +
+    function Activation(string memory login) public view returns(address) {
+        uint empty = 0;
+        for (uint i = 0; i < user.length; i++) {
+            if ( keccak256(abi.encodePacked(user[i].login)) == keccak256(abi.encodePacked(login))) {
+                empty++;
+                return (user[i].addr);
+            }}
+        require(empty != 0, "Error");}
+    
+    // Регистрация + 
+     function Registration(string memory last_name, string memory name, string memory patronymic, string memory role, uint expertise, string memory login) public {
+        /*for (uint i = 0; i < user.length; i++) {
+            require(keccak256(abi.encodePacked(login)) != keccak256(abi.encodePacked(user[i].login)), "Error login");}*/
+        if (keccak256(abi.encodePacked(role)) == keccak256(abi.encodePacked("worker")) || keccak256(abi.encodePacked(role)) == keccak256(abi.encodePacked("client"))) {
+            user.push(info_user(last_name, name, patronymic, role, expertise, msg.sender, login));}}
+    
+    // Зполненение данных водительского удостоверения и проверка ДПС +
+    function Entry_ID_card(uint number, uint day, uint month, uint year, string memory category) public {
+         uint num = 0;
+        uint h = 0;
+        for (uint i = 0; i < massges.length; i++) {
+            if (massges[i].url_client == msg.sender) num++;}
+        uint index = num + 1;
+        for (uint j = 0; j < card.length; j++) {
+            require(card[j].url_card != msg.sender,"Error SOVPODENIE");
+        if ( card[j].day == day && month == card[j].month && year == card[j].year && number == card[j].number && card[j].url_card == 0x0000000000000000000000000000000000000000
+        && keccak256(abi.encodePacked(card[j].category)) == keccak256(abi.encodePacked(category))) { h++;
+            massges.push(message_client(msg.sender,index , "Данные водительского удостоверения сохранены!", block.timestamp));
+            card[j].url_card = msg.sender;}}
+        require(h != 0);}
+    
+    // Заполнение данных регистрации транспортного средства +
+    function Entry_transport(string memory category, uint price, uint srok) public {
+        uint num = 0;
+        for (uint i = 0; i < massges.length; i++) {
+            if (massges[i].url_client == msg.sender) {
+                num++;}}
+        uint index = num + 1;
+        uint num2 = 0;
+        for (uint l = 0; l < transports.length; l++) {
+            if (transports[l].url_transport == msg.sender) {
+                num2++;}}
+        uint index2= num2 + 1;
+        for (uint j = 0; j < card.length; j++) {
+            if (keccak256(abi.encodePacked(card[j].category)) == keccak256(abi.encodePacked(category)) && card[j].url_card == msg.sender) {
+                massges.push(message_client(msg.sender,index , "Транспортное средство зарегистрировано!", block.timestamp));
+                transports.push(transport(index2, category, price, msg.sender, srok));}
+            if (keccak256(abi.encodePacked(card[j].category)) != keccak256(abi.encodePacked(category)) && card[j].url_card == msg.sender) {
+                massges.push(message_client(msg.sender,index , "Неверно заполненны данные транспортного средства!", block.timestamp)); }}}
+    
+    // Продление водительского удостоверения +
+    function Extension_ID_card() public {
+        uint index = 0;
+        uint z = 0;
+        for(uint j = 0; j < massge.length; j++){
+            if (massge[j].url_DPS == msg.sender)z++;}
+            require(z == 0, "Error");
+        for (uint i = 0; i < card.length; i++) {
+            if ( card[i].url_card == msg.sender && z == 0) {
+                index = i;
+                massge.push(message_DPS(msg.sender, index, "Запрос на продление водительского удостоверения!","Ожидает ответа"));}}}
+    
+    // Обработка запроса клиента для ДПС
+     function Processing_DPS(string memory answer, uint nomer) public{
+        nomer--;
+        require(keccak256(abi.encodePacked(massge[nomer].otvet)) == keccak256(abi.encodePacked("Ожидает ответа")));
+        uint a = 0;
+        require(keccak256(abi.encodePacked(answer)) == keccak256(abi.encodePacked("Подтверждено")) || keccak256(abi.encodePacked(answer)) == keccak256(abi.encodePacked("Отклонено"))
+        || keccak256(abi.encodePacked(answer)) ==  keccak256(abi.encodePacked("yes")) || keccak256(abi.encodePacked(answer)) ==  keccak256(abi.encodePacked("no")));
+        address blank = massge[nomer].url_DPS;
+        uint num = 0;
+        for (uint j = 0; j < massges.length; j++) {
+            if (massges[j].url_client == blank) num++;}
+            uint index = num + 1;
+        for (uint i = 0; i < card.length; i++) {
+            if ((keccak256(abi.encodePacked(answer)) == keccak256(abi.encodePacked("Подтверждено")) || keccak256(abi.encodePacked(answer)) ==  keccak256(abi.encodePacked("yes")))  &&  a == 0 && card[i].url_card == blank) {
+                require ( block.timestamp - 2629743 - 86400 < ((( card[i].year - 1970) * 31556926) + ( card[i].month * 2629743)+( card[i].day * 86400 )), "Error!");
+                card[i].year = card[i].year + 10;
+                a++;}}
+        if (a != 0) massges.push(message_client(blank ,index , "Одобрено на продление водительского удостоверения!", block.timestamp));
+            else massges.push(message_client(blank ,index , "Отказ на продление водительского удостоверения!", block.timestamp));
+        massge[nomer].otvet = "Ответ отправлен";}
+    
+}
