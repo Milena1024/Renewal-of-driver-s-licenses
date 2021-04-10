@@ -21,9 +21,9 @@ const Mai =()=> {
         if (password == password2){
                 setTimeout(async()=>{
                 let a = await web3.eth.personal.newAccount(password)
-                await web3.eth.personal.unlockAccount("0x9d295D22246a1fddf9E52f493721d2C8696284fD", "0000").then(console.log)
+                await web3.eth.personal.unlockAccount("0x98512363C537B8fE4e88f6e0AeFb519BF0075969", "0000").then(console.log)
                 console.log(a)
-                await web3.eth.sendTransaction({from: "0x9d295D22246a1fddf9E52f493721d2C8696284fD", to: a,  value: "50000000000000000000"})
+                await web3.eth.sendTransaction({from: "0x98512363C537B8fE4e88f6e0AeFb519BF0075969", to: a,  value: "50000000000000000000"})
                 await web3.eth.personal.unlockAccount(a,password)
 
                     await Contract.methods.Registration(last_name, name, patronymic, "client",expertise, login).send({ from:a }).then(console.log)

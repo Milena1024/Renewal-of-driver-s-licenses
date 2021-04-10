@@ -111,9 +111,9 @@ contract World {
                 return(massges[i].text, massges[i].url_client, massges[i].index, massges[i].dat);}
     //---------------------------------------------------
     constructor() public {
-        user.push(info_user("Иванов", "Иван", "Иванович", "worker", 2, 0x828c6FcD4522786dFec9CD6Fc51605448ad6391a, "aaa"));
-        user.push(info_user("Семенов", "Семен", "Семенович", "client", 5, 0x46a0e47061BCbE52480F7462b44f44303a0088fc, "bbb"));
-        user.push(info_user("Петров", "Петр", "Петрович", "client", 10, 0xb3373f2d00F59bB8227d0c469fA7eAB256104286, "ccc"));
+        user.push(info_user("Иванов", "Иван", "Иванович", "worker", 2, 0x2AD51203E28558AFd40f80BC0D276D7C42F978dF, "aaa"));
+        user.push(info_user("Семенов", "Семен", "Семенович", "client", 5, 0x385d0d9FA655ae7d0BB9Bc850525B2D7D14F30cc, "bbb"));
+        user.push(info_user("Петров", "Петр", "Петрович", "client", 10, 0xf9fb77C86E06E9994A6bC815f35a5aF39172bBB3, "ccc"));
         
         card.push(ID_card(0, 0x0000000000000000000000000000000000000000, 11, 1, 2021, "A"));
         card.push(ID_card(111, 0x0000000000000000000000000000000000000000, 12, 5, 2025, "B"));
